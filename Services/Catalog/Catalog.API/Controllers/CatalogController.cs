@@ -1,0 +1,112 @@
+﻿using Catalog.Application.Commands;
+using Catalog.Application.Queries;
+using Catalog.Application.Responses;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
+
+namespace Catalog.API.Controllers
+{
+    public class CatalogController : ApiController
+    {
+        private readonly IMediator _mediator;
+
+        public CatalogController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
+        [HttpGet]
+        [Route("[action]/{id}", Name = "GetProductById")]
+        [ProducesResponseType(typeof(ProductResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult<ProductResponse>> GetProductById(string id)
+        {
+            var query = new GetProductByIdQuery(id);
+            var product = await _mediator.Send(query);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return Ok(product);
+        }
+
+        [HttpGet]
+        [Route("[action]/{productName}", Name = "GetProductByProductName")]
+        [ProducesResponseType(typeof(IList<ProductResponse>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<IList<ProductResponse>>> GetProductByProductName(string productName)
+        {
+            var query = new GetProductByNameQuery(productName);
+            var products = await _mediator.Send(query);
+            return Ok(products);
+        }
+
+        [HttpGet]
+        [Route("GetAllProducts")]
+        [ProducesResponseType(typeof(IList<ProductResponse>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<IList<ProductResponse>>> GetAllProducts()
+        {
+            var query = new GetAllProductsQuery();
+            var products = await _mediator.Send(query);
+            return Ok(products);
+        }
+
+        [HttpGet]
+        [Route("GetAllBrands")]
+        [ProducesResponseType(typeof(IList<BrandResponse>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<IList<BrandResponse>>> GetAllBrands()
+        {
+            var query = new GetAllBrandsQuery();
+            var brands = await _mediator.Send(query);
+            return Ok(brands);
+        }
+
+        [HttpGet]
+        [Route("GetAllTypes")]
+        [ProducesResponseType(typeof(IList<TypeResponse>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<IList<TypeResponse>>> GetAllTypes()
+        {
+            var query = new GetAllTypesQuery();
+            var types = await _mediator.Send(query);
+            return Ok(types);
+        }
+
+        [HttpGet]
+        [Route("[action]/{brand}", Name = "GetProductByBrandName")]
+        [ProducesResponseType(typeof(IList<ProductResponse>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<IList<ProductResponse>>> GetProductByBrandName(string brandName)
+        {
+            var query = new GetProductByBrandQuery(brandName);
+            var products = await _mediator.Send(query);
+            return Ok(products);
+        }
+
+        [HttpPost]
+        [Route("CreateProduct")]
+        [ProducesResponseType(typeof(ProductResponse), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<ProductResponse>> CreateProduct([FromBody] CreateProductCommand productCommand)
+        {
+            var product = await _mediator.Send<ProductResponse>(productCommand);
+            return Ok(product);
+        }
+
+        [HttpPut]
+        [Route("UpdateProduct")]
+        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<ProductResponse>> UpdateProduct([FromBody] UpdateProductCommand productCommand)
+        {
+            var product = await _mediator.Send(productCommand);
+            return Ok(product);
+        }
+
+        [HttpDelete]
+        [Route("{id}", Name = "DeleteProduct")]
+        [ProducesResponseType(typeof(bool), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<ProductResponse>> DeleteProduct(string id)
+        {
+            var command = new DeleteProductByIdCommand(id);
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+    }
+}
