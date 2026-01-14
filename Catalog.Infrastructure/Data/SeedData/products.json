@@ -1,0 +1,162 @@
+[
+  {
+    "Id": "653b705a8c9e4e0d7c0f1b2c",
+    "Name": "Wireless Noise-Cancelling Headphones",
+    "Summary": "Premium over-ear headphones with industry-leading noise cancellation.",
+    "Description": "Experience pure sound and 30 hours of battery life.",
+    "ImageFile": "headphone_a01.png",
+    "Brands": {
+      "Id": "653b700b9d0f5f1e8d1g2c3d", // Sony ID
+      "Name": "Sony"
+    },
+    "Types": {
+      "Id": "653b6f1a8c9e4e0d7c0f1b2c", // Electronics ID
+      "Name": "Electronics"
+    },
+    "Price": 299.99
+  },
+  {
+    "Id": "653b705b9d0f5f1e8d1g2c3d",
+    "Name": "Organic Cotton T-Shirt",
+    "Summary": "Soft, breathable, and sustainably sourced cotton t-shirt.",
+    "Description": "A classic fit t-shirt made from 100% organic cotton.",
+    "ImageFile": "tshirt_b02.jpg",
+    "Brands": {
+      "Id": "653b700d1f2h7h3g0f3i4e5f", // Puma ID
+      "Name": "Puma"
+    },
+    "Types": {
+      "Id": "653b6f1b9d0f5f1e8d1g2c3d", // Apparel ID
+      "Name": "Apparel"
+    },
+    "Price": 35.50
+  },
+  {
+    "Id": "653b705c0e1g6g2f9e2h3d4e",
+    "Name": "4K Ultra HD Smart TV 55-inch",
+    "Summary": "Vibrant 4K picture quality with integrated smart features.",
+    "Description": "55-inch QLED display with HDR support and voice control.",
+    "ImageFile": "tv_c03.webp",
+    "Brands": {
+      "Id": "653b700e2g3i8i4h1g4j5f6g", // Samsung ID
+      "Name": "Samsung"
+    },
+    "Types": {
+      "Id": "653b6f1c0e1g6g2f9e2h3d4e", // Home Entertainment ID
+      "Name": "Home Entertainment"
+    },
+    "Price": 899.00
+  },
+  {
+    "Id": "653b705d1f2h7h3g0f3i4e5f",
+    "Name": "Ergonomic Office Chair",
+    "Summary": "Full support chair designed for long hours of comfortable work.",
+    "Description": "Features adjustable lumbar support, breathable mesh back.",
+    "ImageFile": "chair_d04.png",
+    "Brands": {
+      "Id": "653b700f3h4j9j5i2h5k6g7h", // Steelcase ID
+      "Name": "Steelcase"
+    },
+    "Types": {
+      "Id": "653b6f1d1f2h7h3g0f3i4e5f", // Furniture ID
+      "Name": "Furniture"
+    },
+    "Price": 450.75
+  },
+  {
+    "Id": "653b705e2g3i8i4h1g4j5f6g",
+    "Name": "Stainless Steel Water Bottle",
+    "Summary": "Insulated bottle keeping drinks cold for 24 hours.",
+    "Description": "18/8 food-grade stainless steel and leak-proof lid.",
+    "ImageFile": "bottle_e05.jpeg",
+    "Brands": {
+      "Id": "653b70104i5k0k6j3i6l7h8i", // HydroFlask ID
+      "Name": "HydroFlask"
+    },
+    "Types": {
+      "Id": "653b6f1e2g3i8i4h1g4j5f6g", // Kitchenware ID
+      "Name": "Kitchenware"
+    },
+    "Price": 25.99
+  },
+  {
+    "Id": "653b705f3h4j9j5i2h5k6g7h",
+    "Name": "Apple MacBook Pro 14-inch",
+    "Summary": "Powerful laptop with M3 chip for professionals.",
+    "Description": "The latest MacBook Pro with Liquid Retina XDR display.",
+    "ImageFile": "macbook_f06.png",
+    "Brands": {
+      "Id": "653b700c0e1g6g2f9e2h3d4e", // Apple ID
+      "Name": "Apple"
+    },
+    "Types": {
+      "Id": "653b6f1f3h4j9j5i2h5k6g7h", // Laptops ID
+      "Name": "Laptops"
+    },
+    "Price": 1999.00
+  },
+  {
+    "Id": "653b70604i5k0k6j3i6l7h8i",
+    "Name": "Running Shoes 'Velocity X'",
+    "Summary": "Lightweight and responsive shoes for marathon training.",
+    "Description": "Engineered mesh upper and specialized foam for energy return.",
+    "ImageFile": "shoe_g07.png",
+    "Brands": {
+      "Id": "653b700a8c9e4e0d7c0f1b2c", // Nike ID
+      "Name": "Nike"
+    },
+    "Types": {
+      "Id": "653b6f204i5k0k6j3i6l7h8i", // Footwear ID
+      "Name": "Footwear"
+    },
+    "Price": 140.00
+  },
+  {
+    "Id": "653b70615j6l1l7k4j7m8i9j",
+    "Name": "Adjustable Dumbbell Set (50lbs)",
+    "Summary": "Compact and versatile weights for home gym setups.",
+    "Description": "Easily adjust weight from 5 to 50 lbs with a turn of the dial.",
+    "ImageFile": "dumbbell_h08.jpg",
+    "Brands": {
+      "Id": "653b70115j6l1l7k4j7m8i9j", // Bowflex ID
+      "Name": "Bowflex"
+    },
+    "Types": {
+      "Id": "653b6f215j6l1l7k4j7m8i9j", // Fitness ID
+      "Name": "Fitness"
+    },
+    "Price": 349.95
+  },
+  {
+    "Id": "653b70626k7m2m8l5k8n9j0k",
+    "Name": "Coffee Maker 12-Cup Programmable",
+    "Summary": "Automatic brewing with digital display and timer.",
+    "Description": "Features a pause-and-pour function and anti-drip system.",
+    "ImageFile": "coffee_i09.png",
+    "Brands": {
+      "Id": "653b70126k7m2m8l5k8n9j0k", // Breville ID
+      "Name": "Breville"
+    },
+    "Types": {
+      "Id": "653b6f226k7m2m8l5k8n9j0k", // Appliances ID
+      "Name": "Appliances"
+    },
+    "Price": 79.99
+  },
+  {
+    "Id": "653b70637l8n3n9m6l9o0k1l",
+    "Name": "Action Camera 4K Waterproof",
+    "Summary": "Capture every adventure in stunning 4K resolution.",
+    "Description": "Waterproof up to 10m and electronic image stabilization.",
+    "ImageFile": "camera_j10.jpg",
+    "Brands": {
+      "Id": "653b70137l8n3n9m6l9o0k1l", // GoPro ID
+      "Name": "GoPro"
+    },
+    "Types": {
+      "Id": "653b6f237l8n3n9m6l9o0k1l", // Photography ID
+      "Name": "Photography"
+    },
+    "Price": 399.00
+  }
+]
