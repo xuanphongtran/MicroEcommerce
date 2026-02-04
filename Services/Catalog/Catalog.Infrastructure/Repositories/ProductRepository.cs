@@ -2,18 +2,13 @@
 using Catalog.Core.Repositories;
 using Catalog.Infrastructure.Data;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Catalog.Infrastructure.Repositories
 {
     public class ProductRepository : IProductRepository, IBrandRepository, ITypesRepository
     {
         public ICatalogContext _context { get; }
-        public ProductRepository(ICatalogContext context) 
+        public ProductRepository(ICatalogContext context)
         {
             _context = context;
         }
@@ -66,10 +61,10 @@ namespace Catalog.Infrastructure.Repositories
 
         async Task<bool> IProductRepository.UpdateProduct(Product product)
         {
-            var updateProduct = await  _context
+            var updateProduct = await _context
                 .Products
                 .ReplaceOneAsync(p => p.Id == product.Id, product);
-            return  updateProduct.IsAcknowledged && updateProduct.ModifiedCount > 0;
+            return updateProduct.IsAcknowledged && updateProduct.ModifiedCount > 0;
         }
 
         async Task<IEnumerable<ProductBrand>> IBrandRepository.GetAllBrands()
