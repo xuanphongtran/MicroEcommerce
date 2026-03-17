@@ -1,21 +1,20 @@
 ﻿using Catalog.Core.Entities;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Catalog.Application.Responses
 {
-    public class ProductResponse
+    public record ProductResponse
     {
-        [BsonId]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
-        public string Id { get; set; }
-        [BsonElement("Name")]
-        public string Name { get; set; }
-        public string Summary { get; set; }
-        public string Description { get; set; }
-        public string ImageFile { get; set; }
-        public ProductBrand Brands { get; set; }
-        public ProductType Types { get; set; }
-        [BsonRepresentation(MongoDB.Bson.BsonType.Decimal128)]
-        public decimal Price { get; set; }
+        public string Id { get; init; }
+        public string Name { get; init; }
+        public string Summary { get; init; }
+        public string Description { get; init; }
+        public string ImageFile { get; init; }
+        public ProductBrand Brand { get; init; }
+        public ProductType Type { get; init; }
+        [BsonRepresentation(BsonType.Decimal128)]
+        public decimal Price { get; init; }
+        public DateTimeOffset CreatedDate { get; init; }
     }
 }

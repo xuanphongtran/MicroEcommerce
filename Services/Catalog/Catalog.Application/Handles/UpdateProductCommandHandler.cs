@@ -1,9 +1,9 @@
 ﻿using Catalog.Application.Commands;
-using Catalog.Core.Entities;
+using Catalog.Application.Mappers;
 using Catalog.Core.Repositories;
 using MediatR;
 
-namespace Catalog.Application.Handles
+namespace Catalog.Application.Handlers
 {
     public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, bool>
     {
@@ -15,18 +15,23 @@ namespace Catalog.Application.Handles
         }
         public async Task<bool> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var productEntity = await _productRepository.UpdateProduct(new Product
+            var existing = await _productRepository.GetProduct(request.Id);
+            if (existing == null)
             {
-                Id = request.ProductId,
-                Name = request.Name,
-                Summary = request.Summary,
-                Description = request.Description,
-                ImageFile = request.ImageFile,
-                Price = request.Price,
-                Brands = request.Brands,
-                Types = request.Types
-            });
-            return true;
+                throw new KeyNotFoundException($"Product with Id {request.Id} not found");
+            }
+            //Step 1: Fetch Brand and Type
+            var brand = await _productRepository.GetBrandByIdAsync(request.BrandId);
+            var type = await _productRepository.GetTypeByIdAsync(request.TypeId);
+            if (brand == null || type == null)
+            {
+                throw new ApplicationException("Invalid Brand or Type Specified");
+            }
+            //Step 2: Mapper Role
+            var updatedProduct = request.ToUpdateEntity(existing, brand, type);
+
+            //Step 3: Save the record
+            return await _productRepository.UpdateProduct(updatedProduct);
         }
     }
 }

@@ -2,50 +2,79 @@ using Catalog.Application.Handles;
 using Catalog.Core.Repositories;
 using Catalog.Infrastructure.Data;
 using Catalog.Infrastructure.Repositories;
+using Catalog.Infrastructure.Settings;
+using Microsoft.Extensions.Options;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Driver;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Register custom Serializers
+BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
+BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(BsonType.String));
+
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Add API Versioning
-builder.Services.AddApiVersioning(options =>
-{
-    options.ReportApiVersions = true;
-    options.AssumeDefaultVersionWhenUnspecified = true;
-    options.DefaultApiVersion = new Asp.Versioning.ApiVersion(1, 0);
-});
+// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Services.AddOpenApi();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+//Add Swagger services
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Catalog.API", Version = "v1" }); });
+builder.Services.AddSwaggerGen();
 
-// Register AutoMapper
-builder.Services.AddAutoMapper(cfg => cfg.AddMaps(typeof(Program).Assembly));
-
-// Register MediatR
+//Register Mediatr
 var assemblies = new Assembly[]
-{
-    Assembly.GetExecutingAssembly(),
-    typeof(GetAllBrandsHandler).Assembly
-};
+    {
+        Assembly.GetExecutingAssembly(),
+        typeof(GetAllBrandsHandler).Assembly
+    };
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies));
 
-// Register application services
-builder.Services.AddScoped<ICatalogContext, CatalogContext>();
+//Custom Services
+builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+builder.Services.AddScoped<ITypeRepository, TypeRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IBrandRepository, ProductRepository>();
-builder.Services.AddScoped<ITypesRepository, ProductRepository>();
+
+// Bind strongly-typed settings
+builder.Services.Configure<DatabaseSettings>(
+    builder.Configuration.GetSection("DatabaseSettings"));
+
+// Register MongoClient as singleton
+builder.Services.AddSingleton<IMongoClient>(sp =>
+{
+    var settings = sp.GetRequiredService<IOptions<DatabaseSettings>>().Value;
+    return new MongoClient(settings.ConnectionString);
+});
+
+//Register Logging
+//builder.Host.UseSerilog(Logging.ConfigureLogger);
 
 var app = builder.Build();
+
+//Seed Mongo db on startup 
+using (var scope = app.Services.CreateScope())
+{
+    var options = scope.ServiceProvider.GetRequiredService<IOptions<DatabaseSettings>>();
+    await DatabaseSeeder.SeedAsync(options);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.MapOpenApi();
+}
 
-    app.UseSwagger();
-    app.UseSwaggerUI();
+//Enable Swagger
+app.UseSwagger();
+app.UseSwaggerUI();
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
 }
 
 app.UseAuthorization();
