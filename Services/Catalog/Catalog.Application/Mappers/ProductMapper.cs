@@ -94,7 +94,5 @@ namespace Catalog.Application.Mappers
                 TypeId = dto.TypeId
             };
         }
-
-        public static IMapper Mapper => Lazy.Value;
     }
 }
