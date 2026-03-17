@@ -53,6 +53,18 @@ builder.Services.AddSingleton<IMongoClient>(sp =>
 //Register Logging
 //builder.Host.UseSerilog(Logging.ConfigureLogger);
 
+// Register AutoMapper
+builder.Services.AddAutoMapper(cfg => cfg.AddMaps(typeof(Program).Assembly));
+
+// Register MediatR
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+
+// Register application services
+builder.Services.AddScoped<ICatalogContext, CatalogContext>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IBrandRepository, ProductRepository>();
+builder.Services.AddScoped<ITypesRepository, ProductRepository>();
+
 var app = builder.Build();
 
 //Seed Mongo db on startup 

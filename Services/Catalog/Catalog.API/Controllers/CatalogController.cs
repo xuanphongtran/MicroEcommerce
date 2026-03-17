@@ -37,7 +37,7 @@ namespace Catalog.API.Controllers
         }
         [HttpGet("productName/{productName}")]
         public async Task<ActionResult<IList<ProductDto>>> GetProductByProductName(string productName)
-        {
+            {
             var query = new GetProductByNameQuery(productName);
             var result = await _mediator.Send(query);
             if (result == null || !result.Any())
@@ -70,9 +70,9 @@ namespace Catalog.API.Controllers
             var command = updateProductDto.ToCommand(id);
             var result = await _mediator.Send(command);
             if (!result)
-            {
+        {
                 return NotFound();
-            }
+        }
             return NoContent();
         }
         [HttpGet("GetAllBrands")]

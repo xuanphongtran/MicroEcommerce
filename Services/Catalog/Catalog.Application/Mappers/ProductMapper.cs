@@ -64,7 +64,7 @@ namespace Catalog.Application.Mappers
         }
 
         public static ProductDto ToDto(this ProductResponse product)
-        {
+            {
             if (product == null) return null;
             return new ProductDto
                 (
@@ -83,7 +83,7 @@ namespace Catalog.Application.Mappers
         public static UpdateProductCommand ToCommand(this UpdateProductDto dto, string id)
         {
             return new UpdateProductCommand
-            {
+             {
                 Id = id,
                 Name = dto.Name,
                 Summary = dto.Summary,
@@ -95,5 +95,6 @@ namespace Catalog.Application.Mappers
             };
         }
 
+        public static IMapper Mapper => Lazy.Value;
     }
 }

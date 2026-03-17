@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Catalog.Core.Repositories
 {
-    public interface IBrandRepository
+    public interface ITypesRepository
     {
-        Task<IEnumerable<ProductBrand>> GetAllBrands();
-        Task<ProductBrand> GetBrandAsync(string id);
+        Task<IEnumerable<ProductType>> GetAllTypes();
     }
 }

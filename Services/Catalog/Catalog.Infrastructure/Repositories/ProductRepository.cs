@@ -5,6 +5,11 @@ using Catalog.Infrastructure.Settings;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Catalog.Infrastructure.Repositories
 {
@@ -62,9 +67,9 @@ namespace Catalog.Infrastructure.Repositories
                 filter &= builder.Eq(p => p.Brand.Id, catalogSpecParams.BrandId);
             }
             if (!string.IsNullOrEmpty(catalogSpecParams.TypeId))
-            {
+        {
                 filter &= builder.Eq(p => p.Type.Id, catalogSpecParams.TypeId);
-            }
+        }
 
             var totalItems = await _products.CountDocumentsAsync(filter);
             var data = await ApplyDataFilters(catalogSpecParams, filter);
@@ -80,7 +85,7 @@ namespace Catalog.Infrastructure.Repositories
         {
             return await _products
                 .Find(p => p.Brand.Name.ToLower() == name.ToLower())
-                .ToListAsync();
+                 .ToListAsync();
         }
 
         public async Task<IEnumerable<Product>> GetProductsByName(string name)
@@ -107,12 +112,12 @@ namespace Catalog.Infrastructure.Repositories
             if (!string.IsNullOrEmpty(catalogSpecParams.Sort))
             {
                 sortDefn = catalogSpecParams.Sort switch
-                {
+        {
                     "priceAsc" => Builders<Product>.Sort.Ascending(p => p.Price),
                     "priceDesc" => Builders<Product>.Sort.Descending(p => p.Price),
                     _ => Builders<Product>.Sort.Ascending(p => p.Name)
                 };
-            }
+        }
             return await _products
                 .Find(filter)
                 .Sort(sortDefn)
