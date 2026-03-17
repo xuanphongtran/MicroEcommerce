@@ -2,7 +2,7 @@
 using Catalog.Core.Repositories;
 using MediatR;
 
-namespace Catalog.Application.Handles
+namespace Catalog.Application.Handlers
 {
     public class DeleteProductByIdCommandHandler : IRequestHandler<DeleteProductByIdCommand, bool>
     {

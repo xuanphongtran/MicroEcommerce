@@ -6,11 +6,11 @@
     "Description": "Experience pure sound and 30 hours of battery life.",
     "ImageFile": "headphone_a01.png",
     "Brands": {
-      "Id": "653b700b9d0f5f1e8d1g2c3d", // Sony ID
+      "Id": "653b700b9d0f5f1e8d1g2c3d",
       "Name": "Sony"
     },
     "Types": {
-      "Id": "653b6f1a8c9e4e0d7c0f1b2c", // Electronics ID
+      "Id": "653b6f1a8c9e4e0d7c0f1b2c",
       "Name": "Electronics"
     },
     "Price": 299.99
@@ -22,11 +22,11 @@
     "Description": "A classic fit t-shirt made from 100% organic cotton.",
     "ImageFile": "tshirt_b02.jpg",
     "Brands": {
-      "Id": "653b700d1f2h7h3g0f3i4e5f", // Puma ID
+      "Id": "653b700d1f2h7h3g0f3i4e5f",
       "Name": "Puma"
     },
     "Types": {
-      "Id": "653b6f1b9d0f5f1e8d1g2c3d", // Apparel ID
+      "Id": "653b6f1b9d0f5f1e8d1g2c3d",
       "Name": "Apparel"
     },
     "Price": 35.50
@@ -38,11 +38,11 @@
     "Description": "55-inch QLED display with HDR support and voice control.",
     "ImageFile": "tv_c03.webp",
     "Brands": {
-      "Id": "653b700e2g3i8i4h1g4j5f6g", // Samsung ID
+      "Id": "653b700e2g3i8i4h1g4j5f6g",
       "Name": "Samsung"
     },
     "Types": {
-      "Id": "653b6f1c0e1g6g2f9e2h3d4e", // Home Entertainment ID
+      "Id": "653b6f1c0e1g6g2f9e2h3d4e",
       "Name": "Home Entertainment"
     },
     "Price": 899.00
@@ -54,11 +54,11 @@
     "Description": "Features adjustable lumbar support, breathable mesh back.",
     "ImageFile": "chair_d04.png",
     "Brands": {
-      "Id": "653b700f3h4j9j5i2h5k6g7h", // Steelcase ID
+      "Id": "653b700f3h4j9j5i2h5k6g7h",
       "Name": "Steelcase"
     },
     "Types": {
-      "Id": "653b6f1d1f2h7h3g0f3i4e5f", // Furniture ID
+      "Id": "653b6f1d1f2h7h3g0f3i4e5f",
       "Name": "Furniture"
     },
     "Price": 450.75
@@ -70,11 +70,11 @@
     "Description": "18/8 food-grade stainless steel and leak-proof lid.",
     "ImageFile": "bottle_e05.jpeg",
     "Brands": {
-      "Id": "653b70104i5k0k6j3i6l7h8i", // HydroFlask ID
+      "Id": "653b70104i5k0k6j3i6l7h8i",
       "Name": "HydroFlask"
     },
     "Types": {
-      "Id": "653b6f1e2g3i8i4h1g4j5f6g", // Kitchenware ID
+      "Id": "653b6f1e2g3i8i4h1g4j5f6g",
       "Name": "Kitchenware"
     },
     "Price": 25.99
@@ -86,11 +86,11 @@
     "Description": "The latest MacBook Pro with Liquid Retina XDR display.",
     "ImageFile": "macbook_f06.png",
     "Brands": {
-      "Id": "653b700c0e1g6g2f9e2h3d4e", // Apple ID
+      "Id": "653b700c0e1g6g2f9e2h3d4e",
       "Name": "Apple"
     },
     "Types": {
-      "Id": "653b6f1f3h4j9j5i2h5k6g7h", // Laptops ID
+      "Id": "653b6f1f3h4j9j5i2h5k6g7h",
       "Name": "Laptops"
     },
     "Price": 1999.00
@@ -102,11 +102,11 @@
     "Description": "Engineered mesh upper and specialized foam for energy return.",
     "ImageFile": "shoe_g07.png",
     "Brands": {
-      "Id": "653b700a8c9e4e0d7c0f1b2c", // Nike ID
+      "Id": "653b700a8c9e4e0d7c0f1b2c",
       "Name": "Nike"
     },
     "Types": {
-      "Id": "653b6f204i5k0k6j3i6l7h8i", // Footwear ID
+      "Id": "653b6f204i5k0k6j3i6l7h8i",
       "Name": "Footwear"
     },
     "Price": 140.00
@@ -118,11 +118,11 @@
     "Description": "Easily adjust weight from 5 to 50 lbs with a turn of the dial.",
     "ImageFile": "dumbbell_h08.jpg",
     "Brands": {
-      "Id": "653b70115j6l1l7k4j7m8i9j", // Bowflex ID
+      "Id": "653b70115j6l1l7k4j7m8i9j", 
       "Name": "Bowflex"
     },
     "Types": {
-      "Id": "653b6f215j6l1l7k4j7m8i9j", // Fitness ID
+      "Id": "653b6f215j6l1l7k4j7m8i9j",
       "Name": "Fitness"
     },
     "Price": 349.95
@@ -134,11 +134,11 @@
     "Description": "Features a pause-and-pour function and anti-drip system.",
     "ImageFile": "coffee_i09.png",
     "Brands": {
-      "Id": "653b70126k7m2m8l5k8n9j0k", // Breville ID
+      "Id": "653b70126k7m2m8l5k8n9j0k",
       "Name": "Breville"
     },
     "Types": {
-      "Id": "653b6f226k7m2m8l5k8n9j0k", // Appliances ID
+      "Id": "653b6f226k7m2m8l5k8n9j0k",
       "Name": "Appliances"
     },
     "Price": 79.99
@@ -150,11 +150,11 @@
     "Description": "Waterproof up to 10m and electronic image stabilization.",
     "ImageFile": "camera_j10.jpg",
     "Brands": {
-      "Id": "653b70137l8n3n9m6l9o0k1l", // GoPro ID
+      "Id": "653b70137l8n3n9m6l9o0k1l",
       "Name": "GoPro"
     },
     "Types": {
-      "Id": "653b6f237l8n3n9m6l9o0k1l", // Photography ID
+      "Id": "653b6f237l8n3n9m6l9o0k1l",
       "Name": "Photography"
     },
     "Price": 399.00

@@ -8,17 +8,16 @@ namespace Catalog.Application.Handles
 {
     public class GetAllTypesHandler : IRequestHandler<GetAllTypesQuery, IList<TypeResponse>>
     {
-        private readonly ITypesRepository _typesRepository;
+        private readonly ITypeRepository _typeRepository;
 
-        public GetAllTypesHandler(ITypesRepository typesRepository)
+        public GetAllTypesHandler(ITypeRepository typeRepository)
         {
-            _typesRepository = typesRepository;
+            _typeRepository = typeRepository;
         }
         public async Task<IList<TypeResponse>> Handle(GetAllTypesQuery request, CancellationToken cancellationToken)
         {
-            var typesList = await _typesRepository.GetAllTypes();
-            var typesResponseList = ProductMapper.Mapper.Map<IList<TypeResponse>>(typesList);
-            return typesResponseList;
+            var typesList = await _typeRepository.GetAllTypes();
+            return typesList.ToResponseList();
         }
 
     }

@@ -5,7 +5,7 @@ using Catalog.Core.Entities;
 using Catalog.Core.Repositories;
 using MediatR;
 
-namespace Catalog.Application.Handles
+namespace Catalog.Application.Handlers
 {
     public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, ProductResponse>
     {
@@ -17,14 +17,18 @@ namespace Catalog.Application.Handles
         }
         public async Task<ProductResponse> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
-            var productEntity = ProductMapper.Mapper.Map<Product>(request);
-            if (productEntity is null)
+            //Fetch Brand and Type from Repository
+            var brand = await _productRepository.GetBrandByIdAsync(request.BrandId);
+            var type = await _productRepository.GetTypeByIdAsync(request.TypeId);
+
+            if (brand == null || type == null)
             {
-                throw new ArgumentNullException("There is an issue with mapping while creating new product.");
+                throw new ApplicationException("Invalid Brand or Type Specified");
             }
+            //Match to Entity
+            var productEntity = request.ToEntity(brand, type);
             var newProduct = await _productRepository.CreateProduct(productEntity);
-            var productResponse = ProductMapper.Mapper.Map<ProductResponse>(newProduct);
-            return productResponse;
+            return newProduct.ToResponse();
         }
     }
 }

@@ -1,6 +1,9 @@
 ﻿using Catalog.Core.Entities;
 using Catalog.Core.Repositories;
-using Catalog.Infrastructure.Data;
+using Catalog.Core.Specifications;
+using Catalog.Infrastructure.Settings;
+using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -10,81 +13,116 @@ using System.Threading.Tasks;
 
 namespace Catalog.Infrastructure.Repositories
 {
-    public class ProductRepository : IProductRepository, IBrandRepository, ITypesRepository
+    public class ProductRepository : IProductRepository
     {
-        public ICatalogContext _context { get; }
-        public ProductRepository(ICatalogContext context) 
+        private readonly IMongoCollection<ProductBrand> _brands;
+        private readonly IMongoCollection<ProductType> _types;
+        private readonly IMongoCollection<Product> _products;
+        public ProductRepository(IOptions<DatabaseSettings> options)
         {
-            _context = context;
+            var settings = options.Value;
+            var client = new MongoClient(settings.ConnectionString);
+            var db = client.GetDatabase(settings.DatabaseName);
+            _brands = db.GetCollection<ProductBrand>(settings.BrandCollectionName);
+            _types = db.GetCollection<ProductType>(settings.TypeCollectionName);
+            _products = db.GetCollection<Product>(settings.ProductCollectionName);
         }
-
-        async Task<Product> IProductRepository.GetProduct(string id)
+        public async Task<Product> CreateProduct(Product product)
         {
-            return await _context
-                .Products
-                .Find(p => p.Id == id)
-                .FirstOrDefaultAsync();
-        }
-
-        async Task<IEnumerable<Product>> IProductRepository.GetProducts()
-        {
-            return await _context
-                .Products
-                .Find(p => true)
-                .ToListAsync();
-        }
-
-        async Task<IEnumerable<Product>> IProductRepository.GetProductsByBrand(string brandName)
-        {
-            return await _context
-                .Products
-                .Find(p => p.Brands.Name.ToLower() == brandName.ToLower())
-                .ToListAsync();
-        }
-
-        async Task<IEnumerable<Product>> IProductRepository.GetProductsByName(string name)
-        {
-            return await _context
-                 .Products
-                 .Find(p => p.Name.ToLower() == name.ToLower())
-                 .ToListAsync();
-        }
-
-        async Task<Product> IProductRepository.CreateProduct(Product product)
-        {
-            await _context.Products.InsertOneAsync(product);
+            await _products.InsertOneAsync(product);
             return product;
         }
 
-        async Task<bool> IProductRepository.DeleteProduct(string id)
+        public async Task<bool> DeleteProduct(string productId)
         {
-            var deletedProduct = await _context
-                .Products
-                .DeleteOneAsync(p => p.Id == id);
+            var deletedProduct = await _products.DeleteOneAsync(p => p.Id == productId);
             return deletedProduct.IsAcknowledged && deletedProduct.DeletedCount > 0;
         }
 
-        async Task<bool> IProductRepository.UpdateProduct(Product product)
+        public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            var updateProduct = await  _context
-                .Products
+            return await _products.Find(p => true).ToListAsync();
+        }
+
+        public async Task<ProductBrand> GetBrandByIdAsync(string brandId)
+        {
+            return await _brands.Find(b => b.Id == brandId).FirstOrDefaultAsync();
+        }
+
+        public async Task<Product> GetProduct(string productId)
+        {
+            return await _products.Find(p => p.Id == productId).FirstOrDefaultAsync();
+        }
+
+        public async Task<Pagination<Product>> GetProducts(CatalogSpecParams catalogSpecParams)
+        {
+            var builder = Builders<Product>.Filter;
+            var filter = builder.Empty;
+            if (!string.IsNullOrEmpty(catalogSpecParams.Search))
+            {
+                filter &= builder.Where(p => p.Name.ToLower().Contains(catalogSpecParams.Search.ToLower()));
+            }
+            if (!string.IsNullOrEmpty(catalogSpecParams.BrandId))
+            {
+                filter &= builder.Eq(p => p.Brand.Id, catalogSpecParams.BrandId);
+            }
+            if (!string.IsNullOrEmpty(catalogSpecParams.TypeId))
+        {
+                filter &= builder.Eq(p => p.Type.Id, catalogSpecParams.TypeId);
+        }
+
+            var totalItems = await _products.CountDocumentsAsync(filter);
+            var data = await ApplyDataFilters(catalogSpecParams, filter);
+            return new Pagination<Product>(
+                catalogSpecParams.PageIndex,
+                catalogSpecParams.PageSize,
+                (int)totalItems,
+                data
+                );
+        }
+
+        public async Task<IEnumerable<Product>> GetProductsByBrand(string name)
+        {
+            return await _products
+                .Find(p => p.Brand.Name.ToLower() == name.ToLower())
+                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Product>> GetProductsByName(string name)
+        {
+            var filter = Builders<Product>.Filter.Regex(p => p.Name, new BsonRegularExpression($".*{name}.*", "i"));
+            return await _products.Find(filter).ToListAsync();
+        }
+
+        public async Task<ProductType> GetTypeByIdAsync(string typeId)
+        {
+            return await _types.Find(t => t.Id == typeId).FirstOrDefaultAsync();
+        }
+
+        public async Task<bool> UpdateProduct(Product product)
+        {
+            var updatedProduct = await _products
                 .ReplaceOneAsync(p => p.Id == product.Id, product);
-            return  updateProduct.IsAcknowledged && updateProduct.ModifiedCount > 0;
+            return updatedProduct.IsAcknowledged && updatedProduct.ModifiedCount > 0;
         }
 
-        async Task<IEnumerable<ProductBrand>> IBrandRepository.GetAllBrands()
+        private async Task<IReadOnlyCollection<Product>> ApplyDataFilters(CatalogSpecParams catalogSpecParams, FilterDefinition<Product> filter)
         {
-            return await _context
-                .Brands
-                .Find(brand => true)
-                .ToListAsync();
+            var sortDefn = Builders<Product>.Sort.Ascending("Name");
+            if (!string.IsNullOrEmpty(catalogSpecParams.Sort))
+            {
+                sortDefn = catalogSpecParams.Sort switch
+        {
+                    "priceAsc" => Builders<Product>.Sort.Ascending(p => p.Price),
+                    "priceDesc" => Builders<Product>.Sort.Descending(p => p.Price),
+                    _ => Builders<Product>.Sort.Ascending(p => p.Name)
+                };
         }
-
-        async Task<IEnumerable<ProductType>> ITypesRepository.GetAllTypes()
-        {
-            return await _context
-                .Types
-                .Find(type => true)
+            return await _products
+                .Find(filter)
+                .Sort(sortDefn)
+                .Skip(catalogSpecParams.PageSize * (catalogSpecParams.PageIndex - 1))
+                .Limit(catalogSpecParams.PageSize)
                 .ToListAsync();
         }
     }
