@@ -1,28 +1,34 @@
+using Discount.API.Services;
+using Discount.Application.Handlers;
+using Discount.Core.Repositories;
+using Discount.Infrastructure.Repositories;
 using Discount.Infrastructure.Settings;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+// MediatR
+var assemlies = new Assembly[]
+{
+    Assembly.GetExecutingAssembly(), typeof(CreateDiscountHandler).Assembly
+};
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemlies));
+builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
+builder.Services.AddGrpc();
 
 // Database settings
 builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DatabaseSettings"));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Seed the database
+app.MigrateDatabase();
+app.UseRouting();
+app.UseEndpoints(endpoints =>
 {
-    app.MapOpenApi();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
+    endpoints.MapGrpcService<DiscountService>();
+});
 
 app.Run();
