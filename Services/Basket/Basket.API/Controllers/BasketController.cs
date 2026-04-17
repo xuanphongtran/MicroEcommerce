@@ -28,7 +28,7 @@ namespace Basket.API.Controllers
 
         //Post: api/v1/basket
         [HttpPost]
-        public async Task<ActionResult<ShoppingCartDto>> CreateOrUpdateBasket([FromBody] CreateShoppingCartItemDto command)
+        public async Task<ActionResult<ShoppingCartDto>> CreateOrUpdateBasket([FromBody] CreateShoppingCartCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);
