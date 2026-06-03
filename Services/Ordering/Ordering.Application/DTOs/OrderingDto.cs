@@ -1,6 +1,8 @@
-﻿namespace Ordering.Application.DTOs
+﻿using Ordering.Application.Orders.CreateOrder;
+
+namespace Ordering.Application.DTOs
 {
-    public class CreateOrderDto(
+    public record CreateOrderDto(
         string UserName,
         decimal TotalPrice,
         string FirstName,
@@ -15,6 +17,7 @@
         string Expiration,
         string Cvv,
         int PaymentMethod);
+
 
     public record OrderDto(
         int Id,
@@ -32,4 +35,5 @@
         string Expiration,
         string Cvv,
         int PaymentMethod);
+
 }
